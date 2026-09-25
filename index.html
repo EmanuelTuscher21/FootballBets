@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UEFA Nations League - Matchday 1 Predictions</title>
+    <title>UEFA Nations League - Matchday Predictor</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -67,25 +67,33 @@
                     <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
                         UEFA Nations League
                     </h1>
-                    <p class="text-xs text-cyan-400 font-medium">Group Stage · Matchday 1 of 6</p>
+                    <p id="sub-header-text" class="text-xs text-cyan-400 font-medium">Group Stage · Matchday 1 of 6</p>
                 </div>
             </div>
 
-            <!-- Global Stats / Scoreboard -->
-            <div class="flex items-center space-x-4 bg-[#131B2E] px-4 py-2 rounded-xl border border-slate-700/60 shadow-inner">
-                <div class="text-center pr-3 border-r border-slate-700">
-                    <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Points</span>
-                    <span id="user-points" class="text-lg font-bold text-cyan-400">0</span>
-                </div>
-                <div class="text-center pr-3 border-r border-slate-700">
-                    <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Correct</span>
-                    <span id="user-accuracy" class="text-lg font-bold text-emerald-400">0/0</span>
-                </div>
-                <div class="text-center">
-                    <span class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Status</span>
-                    <span id="prediction-status-badge" class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                        Open
-                    </span>
+            <div class="flex items-center space-x-3">
+                <!-- Language Switcher -->
+                <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-2 transition-all shadow-sm">
+                    <i class="fa-solid fa-globe text-cyan-400"></i>
+                    <span id="lang-toggle-text">EN</span>
+                </button>
+
+                <!-- Global Stats / Scoreboard -->
+                <div class="flex items-center space-x-4 bg-[#131B2E] px-4 py-2 rounded-xl border border-slate-700/60 shadow-inner">
+                    <div class="text-center pr-3 border-r border-slate-700">
+                        <span id="lbl-points" class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Points</span>
+                        <span id="user-points" class="text-lg font-bold text-cyan-400">0</span>
+                    </div>
+                    <div class="text-center pr-3 border-r border-slate-700">
+                        <span id="lbl-correct" class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Correct</span>
+                        <span id="user-accuracy" class="text-lg font-bold text-emerald-400">0/0</span>
+                    </div>
+                    <div class="text-center">
+                        <span id="lbl-status" class="text-[10px] uppercase tracking-wider text-slate-400 block font-semibold">Status</span>
+                        <span id="prediction-status-badge" class="text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                            Open
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -97,17 +105,17 @@
         <!-- Controls Banner -->
         <div class="bg-[#131B2E] border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-wrap justify-between items-center gap-4">
             <div>
-                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <h2 id="predictor-title" class="text-lg font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-gamepad text-cyan-400"></i> Matchday Predictor Center
                 </h2>
-                <p class="text-xs text-slate-400 mt-1">Make your predictions for upcoming fixtures, lock them in, or simulate match outcomes to evaluate your points!</p>
+                <p id="predictor-desc" class="text-xs text-slate-400 mt-1">Make your predictions for upcoming fixtures, lock them in, or simulate match outcomes to evaluate your points!</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
                 <button id="lock-all-btn" onclick="lockAllPredictions()" class="px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-semibold text-xs sm:text-sm flex items-center gap-2 transition-all">
-                    <i class="fa-solid fa-lock"></i> Lock All Predictions
+                    <i class="fa-solid fa-lock"></i> <span id="btn-lock-all-text">Lock All Predictions</span>
                 </button>
                 <button id="simulate-btn" onclick="simulateUpcomingMatches()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/25 flex items-center gap-2 transition-all">
-                    <i class="fa-solid fa-bolt"></i> Evaluate / Simulate Upcoming
+                    <i class="fa-solid fa-bolt"></i> <span id="btn-simulate-text">Evaluate / Simulate Upcoming</span>
                 </button>
                 <button onclick="resetUpcomingPredictions()" class="px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs sm:text-sm transition-all" title="Reset Bets">
                     <i class="fa-solid fa-rotate-left"></i>
@@ -120,9 +128,9 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
-                    <h2 class="text-xl font-bold tracking-tight text-white">Upcoming Fixtures <span class="text-xs font-normal text-slate-400 font-mono">(Morgen / Tomorrow)</span></h2>
+                    <h2 id="upcoming-title" class="text-xl font-bold tracking-tight text-white">Upcoming Fixtures <span id="upcoming-subtitle" class="text-xs font-normal text-slate-400 font-mono">(Tomorrow)</span></h2>
                 </div>
-                <span class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">10 Matches</span>
+                <span class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700"><span id="upcoming-count">10</span> <span id="lbl-matches-count">Matches</span></span>
             </div>
 
             <!-- Grid of Upcoming Matches -->
@@ -136,9 +144,9 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                    <h2 class="text-xl font-bold tracking-tight text-white">Finished Matches <span class="text-xs font-normal text-slate-400 font-mono">(Final Score - Yesterday / Today)</span></h2>
+                    <h2 id="finished-title" class="text-xl font-bold tracking-tight text-white">Finished Matches <span id="finished-subtitle" class="text-xs font-normal text-slate-400 font-mono">(Final Score - Yesterday / Today)</span></h2>
                 </div>
-                <span class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">16 Results</span>
+                <span class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700"><span id="finished-count">16</span> <span id="lbl-results-count">Results</span></span>
             </div>
 
             <!-- Grid of Finished Matches -->
@@ -152,13 +160,13 @@
     <!-- Footer -->
     <footer class="bg-[#0D131F] border-t border-slate-800/80 py-6 mt-12">
         <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 space-y-2">
-            <p>UEFA Nations League Official Matchday 1 Data & Interactive Simulation Platform</p>
-            <p class="text-slate-600">All team flags powered by standard SVG country representations.</p>
+            <p id="footer-text-1">UEFA Nations League Official Matchday 1 Data & Interactive Simulation Platform</p>
+            <p id="footer-text-2" class="text-slate-600">All team flags powered by standard SVG country representations.</p>
         </div>
     </footer>
 
     <script>
-        // Data derived directly from provided screenshots
+        // Mapping of team IDs/keys to flag CDN ISO country codes
         const FLAG_MAP = {
             "Andorra": "ad",
             "Malta": "mt",
@@ -191,10 +199,10 @@
             "Turkey": "tr",
             "France": "fr",
             "Poland": "pl",
-            "Bosnia-Herzegowina": "ba",
+            "Bosnia and Herzegovina": "ba",
             "Slovenia": "si",
-            "Scottland": "gb-sct",
-            "Färöer": "fo",
+            "Scotland": "gb-sct",
+            "Faroe Islands": "fo",
             "Kazakhstan": "kz",
             "San Marino": "sm",
             "Finland": "fi",
@@ -203,70 +211,286 @@
             "Bulgaria": "bg",
             "Luxembourg": "lu",
             "Czechia": "cz",
-            "croatien": "hr",
+            "Croatia": "hr",
             "North Macedonia": "mk",
             "Switzerland": "ch",
             "England": "gb-eng",
             "Spain": "es",
             "Slovakia": "sk",
-            "Moldavo": "md",
+            "Moldova": "md",
             "Albania": "al",
             "Belarus": "by"
         };
 
-        function getFlagUrl(countryName) {
-            const code = FLAG_MAP[countryName];
-            if (!code) return `https://placehold.co/40x30/1e293b/ffffff?text=${countryName.slice(0, 2)}`;
-            if (code.startsWith("gb-")) {
-                return `https://flagcdn.com/w40/${code}.png`;
+        // Complete Country Names Translation Map
+        const COUNTRY_NAMES = {
+            "Andorra": { en: "Andorra", de: "Andorra" },
+            "Malta": { en: "Malta", de: "Malta" },
+            "Norway": { en: "Norway", de: "Norwegen" },
+            "Denmark": { en: "Denmark", de: "Dänemark" },
+            "Liechtenstein": { en: "Liechtenstein", de: "Liechtenstein" },
+            "Lithuania": { en: "Lithuania", de: "Litauen" },
+            "Kosovo": { en: "Kosovo", de: "Kosovo" },
+            "Ireland": { en: "Ireland", de: "Irland" },
+            "Netherlands": { en: "Netherlands", de: "Niederlande" },
+            "Germany": { en: "Germany", de: "Deutschland" },
+            "Austria": { en: "Austria", de: "Österreich" },
+            "Israel": { en: "Israel", de: "Israel" },
+            "Portugal": { en: "Portugal", de: "Portugal" },
+            "Wales": { en: "Wales", de: "Wales" },
+            "Serbia": { en: "Serbia", de: "Serbien" },
+            "Greece": { en: "Greece", de: "Griechenland" },
+            "Georgia": { en: "Georgia", de: "Georgien" },
+            "Northern Ireland": { en: "Northern Ireland", de: "Nordirland" },
+            "Armenia": { en: "Armenia", de: "Armenien" },
+            "Latvia": { en: "Latvia", de: "Lettland" },
+            "Sweden": { en: "Sweden", de: "Schweden" },
+            "Romania": { en: "Romania", de: "Rumänien" },
+            "Montenegro": { en: "Montenegro", de: "Montenegro" },
+            "Cyprus": { en: "Cyprus", de: "Zypern" },
+            "Hungary": { en: "Hungary", de: "Ungarn" },
+            "Ukraine": { en: "Ukraine", de: "Ukraine" },
+            "Italy": { en: "Italy", de: "Italien" },
+            "Belgium": { en: "Belgium", de: "Belgien" },
+            "Turkey": { en: "Turkey", de: "Türkei" },
+            "France": { en: "France", de: "Frankreich" },
+            "Poland": { en: "Poland", de: "Polen" },
+            "Bosnia and Herzegovina": { en: "Bosnia and Herzegovina", de: "Bosnien-Herzegowina" },
+            "Slovenia": { en: "Slovenia", de: "Slowenien" },
+            "Scotland": { en: "Scotland", de: "Schottland" },
+            "Faroe Islands": { en: "Faroe Islands", de: "Färöer" },
+            "Kazakhstan": { en: "Kazakhstan", de: "Kasachstan" },
+            "San Marino": { en: "San Marino", de: "San Marino" },
+            "Finland": { en: "Finland", de: "Finnland" },
+            "Iceland": { en: "Iceland", de: "Island" },
+            "Estonia": { en: "Estonia", de: "Estland" },
+            "Bulgaria": { en: "Bulgaria", de: "Bulgarien" },
+            "Luxembourg": { en: "Luxembourg", de: "Luxemburg" },
+            "Czechia": { en: "Czechia", de: "Tschechien" },
+            "Croatia": { en: "Croatia", de: "Kroatien" },
+            "North Macedonia": { en: "North Macedonia", de: "Nordmazedonien" },
+            "Switzerland": { en: "Switzerland", de: "Schweiz" },
+            "England": { en: "England", de: "England" },
+            "Spain": { en: "Spain", de: "Spanien" },
+            "Slovakia": { en: "Slovakia", de: "Slowakei" },
+            "Moldova": { en: "Moldova", de: "Moldawien" },
+            "Albania": { en: "Albania", de: "Albanien" },
+            "Belarus": { en: "Belarus", de: "Weißrussland" }
+        };
+
+        const TRANSLATIONS = {
+            en: {
+                subtitle: "Group Stage · Matchday 1 of 6",
+                points: "Points",
+                correct: "Correct",
+                status: "Status",
+                open: "Open",
+                evaluated: "Evaluated",
+                predictorTitle: "Matchday Predictor Center",
+                predictorDesc: "Make your predictions for upcoming fixtures, lock them in, or simulate match outcomes to evaluate your points!",
+                btnLockAll: "Lock All Predictions",
+                btnSimulate: "Evaluate / Simulate Upcoming",
+                upcomingTitle: "Upcoming Fixtures",
+                upcomingSubtitle: "(Tomorrow)",
+                finishedTitle: "Finished Matches",
+                finishedSubtitle: "(Final Score - Yesterday / Today)",
+                matchesCount: "Matches",
+                resultsCount: "Results",
+                tomorrow: "Tomorrow",
+                locked: "Locked",
+                draw: "Draw",
+                noBetMsg: "You didn't bet on this match",
+                wonMsg: "won!",
+                drawOccurred: "Draw occurred!",
+                resultPrefix: "Result",
+                footer1: "UEFA Nations League Official Matchday 1 Data & Interactive Simulation Platform",
+                footer2: "All team flags powered by standard SVG country representations.",
+                yesterday: "Yesterday",
+                today: "Today",
+                finalScore: "Final Score",
+                lockedSelection: "Locked"
+            },
+            de: {
+                subtitle: "Gruppenphase · Spieltag 1 von 6",
+                points: "Punkte",
+                correct: "Richtig",
+                status: "Status",
+                open: "Offen",
+                evaluated: "Ausgewertet",
+                predictorTitle: "Spieltag Prognose-Center",
+                predictorDesc: "Geben Sie Ihre Tipps für anstehende Spiele ab, sperren Sie diese oder simulieren Sie Spielergebnisse!",
+                btnLockAll: "Alle Tipps sperren",
+                btnSimulate: "Anstehende auswerten / simulieren",
+                upcomingTitle: "Anstehende Begegnungen",
+                upcomingSubtitle: "(Morgen)",
+                finishedTitle: "Beendete Spiele",
+                finishedSubtitle: "(Endstand - Gestern / Heute)",
+                matchesCount: "Spiele",
+                resultsCount: "Ergebnisse",
+                tomorrow: "Morgen",
+                locked: "Gesperrt",
+                draw: "Unentschieden",
+                noBetMsg: "Du hast auf dieses Spiel nicht gewettet",
+                wonMsg: "hat gewonnen!",
+                drawOccurred: "Unentschieden!",
+                resultPrefix: "Ergebnis",
+                footer1: "UEFA Nations League Offizielle Spieltag 1 Daten & Interaktive Simulationsplattform",
+                footer2: "Alle Länderflaggen werden als Standard-SVG-Grafiken bereitgestellt.",
+                yesterday: "Gestern",
+                today: "Heute",
+                finalScore: "Endstand",
+                lockedSelection: "Gesperrt"
             }
+        };
+
+        function getTeamName(englishKey, lang) {
+            if (COUNTRY_NAMES[englishKey] && COUNTRY_NAMES[englishKey][lang]) {
+                return COUNTRY_NAMES[englishKey][lang];
+            }
+            return englishKey;
+        }
+
+        function getFlagUrl(englishKey) {
+            const code = FLAG_MAP[englishKey];
+            if (!code) return `https://placehold.co/40x30/1e293b/ffffff?text=${englishKey.slice(0, 2)}`;
             return `https://flagcdn.com/w40/${code}.png`;
         }
 
-        // Finished Matches Array (16 items directly from screenshot data)
+        // 16 Finished Matches Data
         const finishedMatches = [
-            { id: 'f1', home: 'Andorra', homeScore: 1, away: 'Malta', awayScore: 2, winner: 'away', status: 'Final Score', day: 'Yesterday', redCard: null },
-            { id: 'f2', home: 'Norway', homeScore: 3, away: 'Denmark', awayScore: 2, winner: 'home', status: 'Final Score', day: 'Yesterday', redCard: 'home' },
-            { id: 'f3', home: 'Liechtenstein', homeScore: 0, away: 'Lithuania', awayScore: 2, winner: 'away', status: 'Final Score', day: 'Yesterday', redCard: null },
-            { id: 'f4', home: 'Kosovo', homeScore: 1, away: 'Ireland', awayScore: 0, winner: 'home', status: 'Final Score', day: 'Yesterday', redCard: null },
-            { id: 'f5', home: 'Netherlands', homeScore: 1, away: 'Germany', awayScore: 1, winner: 'draw', status: 'Final Score', day: 'Yesterday', redCard: null },
-            { id: 'f6', home: 'Austria', homeScore: 3, away: 'Israel', awayScore: 1, winner: 'home', status: 'Final Score', day: 'Yesterday', redCard: 'away' },
-            { id: 'f7', home: 'Portugal', homeScore: 1, away: 'Wales', awayScore: 0, winner: 'home', status: 'Final Score', day: 'Yesterday', redCard: null },
-            { id: 'f8', home: 'Serbia', homeScore: 1, away: 'Greece', awayScore: 2, winner: 'away', status: 'Final Score', day: 'Yesterday', redCard: null },
-            { id: 'f9', home: 'Georgia', homeScore: 0, away: 'Northern Ireland', awayScore: 1, winner: 'away', status: 'Final Score', day: 'Today', redCard: null },
-            { id: 'f10', home: 'Armenia', homeScore: 2, away: 'Latvia', awayScore: 0, winner: 'home', status: 'Final Score', day: 'Today', redCard: null },
-            { id: 'f11', home: 'Schweden', homeScore: 2, away: 'Romania', awayScore: 1, winner: 'home', status: 'Final Score', day: 'Today', redCard: null },
-            { id: 'f12', home: 'Montenegro', homeScore: 2, away: 'Cyprus', awayScore: 1, winner: 'home', status: 'Final Score', day: 'Today', redCard: null },
-            { id: 'f13', home: 'Hungary', homeScore: 0, away: 'Ukraine', awayScore: 1, winner: 'away', status: 'Final Score', day: 'Today', redCard: 'away' },
-            { id: 'f14', home: 'Italy', homeScore: 0, away: 'Belgium', awayScore: 2, winner: 'away', status: 'Final Score', day: 'Today', redCard: null },
-            { id: 'f15', home: 'Turkey', homeScore: 0, away: 'France', awayScore: 1, winner: 'away', status: 'Final Score', day: 'Today', redCard: 'home' },
-            { id: 'f16', home: 'Poland', homeScore: 0, away: 'Bosnia-Herzegowina', awayScore: 0, winner: 'draw', status: 'Final Score', day: 'Today', redCard: null }
+            { id: 'f1', homeKey: 'Andorra', homeScore: 1, awayKey: 'Malta', awayScore: 2, winner: 'away', status: 'Endstand', dayKey: 'yesterday', redCard: null },
+            { id: 'f2', homeKey: 'Norway', homeScore: 3, awayKey: 'Denmark', awayScore: 2, winner: 'home', status: 'Endstand', dayKey: 'yesterday', redCard: 'home' },
+            { id: 'f3', homeKey: 'Liechtenstein', homeScore: 0, awayKey: 'Lithuania', awayScore: 2, winner: 'away', status: 'Endstand', dayKey: 'yesterday', redCard: null },
+            { id: 'f4', homeKey: 'Kosovo', homeScore: 1, awayKey: 'Ireland', awayScore: 0, winner: 'home', status: 'Endstand', dayKey: 'yesterday', redCard: null },
+            { id: 'f5', homeKey: 'Netherlands', homeScore: 1, awayKey: 'Germany', awayScore: 1, winner: 'draw', status: 'Endstand', dayKey: 'yesterday', redCard: null },
+            { id: 'f6', homeKey: 'Austria', homeScore: 3, awayKey: 'Israel', awayScore: 1, winner: 'home', status: 'Endstand', dayKey: 'yesterday', redCard: 'away' },
+            { id: 'f7', homeKey: 'Portugal', homeScore: 1, awayKey: 'Wales', awayScore: 0, winner: 'home', status: 'Endstand', dayKey: 'yesterday', redCard: null },
+            { id: 'f8', homeKey: 'Serbia', homeScore: 1, awayKey: 'Greece', awayScore: 2, winner: 'away', status: 'Endstand', dayKey: 'yesterday', redCard: null },
+            { id: 'f9', homeKey: 'Georgia', homeScore: 0, awayKey: 'Northern Ireland', awayScore: 1, winner: 'away', status: 'Endstand', dayKey: 'today', redCard: null },
+            { id: 'f10', homeKey: 'Armenia', homeScore: 2, awayKey: 'Latvia', awayScore: 0, winner: 'home', status: 'Endstand', dayKey: 'today', redCard: null },
+            { id: 'f11', homeKey: 'Sweden', homeScore: 2, awayKey: 'Romania', awayScore: 1, winner: 'home', status: 'Endstand', dayKey: 'today', redCard: null },
+            { id: 'f12', homeKey: 'Montenegro', homeScore: 2, awayKey: 'Cyprus', awayScore: 1, winner: 'home', status: 'Endstand', dayKey: 'today', redCard: null },
+            { id: 'f13', homeKey: 'Hungary', homeScore: 0, awayKey: 'Ukraine', awayScore: 1, winner: 'away', status: 'Endstand', dayKey: 'today', redCard: 'away' },
+            { id: 'f14', homeKey: 'Italy', homeScore: 0, awayKey: 'Belgium', awayScore: 2, winner: 'away', status: 'Endstand', dayKey: 'today', redCard: null },
+            { id: 'f15', homeKey: 'Turkey', homeScore: 0, awayKey: 'France', awayScore: 1, winner: 'away', status: 'Endstand', dayKey: 'today', redCard: 'home' },
+            { id: 'f16', homeKey: 'Poland', homeScore: 0, awayKey: 'Bosnia and Herzegovina', awayScore: 0, winner: 'draw', status: 'Endstand', dayKey: 'today', redCard: null }
         ];
 
-        // Upcoming Matches Array (10 items directly from screenshot data)
+        // 10 Upcoming Matches Data
         const upcomingMatches = [
-            { id: 'u1', home: 'Slovenia', away: 'Scottland', time: '15:00', simHome: 1, simAway: 2, simWinner: 'away' },
-            { id: 'u2', home: 'Färöer', away: 'Kazakhstan', time: '18:00', simHome: 1, simAway: 1, simWinner: 'draw' },
-            { id: 'u3', home: 'San Marino', away: 'Finland', time: '18:00', simHome: 0, simAway: 3, simWinner: 'away' },
-            { id: 'u4', home: 'Iceland', away: 'Estonia', time: '18:00', simHome: 2, simAway: 0, simWinner: 'home' },
-            { id: 'u5', home: 'Bulgaria', away: 'Luxembourg', time: '18:00', simHome: 1, simAway: 0, simWinner: 'home' },
-            { id: 'u6', home: 'Czechia', away: 'croatia', time: '20:45', simHome: 1, simAway: 2, simWinner: 'away' },
-            { id: 'u7', home: 'North Macedonia', away: 'Switzerland', time: '20:45', simHome: 0, simAway: 2, simWinner: 'away' },
-            { id: 'u8', home: 'England', away: 'Spain', time: '20:45', simHome: 2, simAway: 1, simWinner: 'home' },
-            { id: 'u9', home: 'Slovakia', away: 'Moldavo', time: '20:45', simHome: 3, simAway: 0, simWinner: 'home' },
-            { id: 'u10', home: 'Albania', away: 'Belarus', time: '20:45', simHome: 1, simAway: 0, simWinner: 'home' }
+            { id: 'u1', homeKey: 'Slovenia', awayKey: 'Scotland', time: '15:00', simHome: 1, simAway: 2, simWinner: 'away' },
+            { id: 'u2', homeKey: 'Faroe Islands', awayKey: 'Kazakhstan', time: '18:00', simHome: 1, simAway: 1, simWinner: 'draw' },
+            { id: 'u3', homeKey: 'San Marino', awayKey: 'Finland', time: '18:00', simHome: 0, simAway: 3, simWinner: 'away' },
+            { id: 'u4', homeKey: 'Iceland', awayKey: 'Estonia', time: '18:00', simHome: 2, simAway: 0, simWinner: 'home' },
+            { id: 'u5', homeKey: 'Bulgaria', awayKey: 'Luxembourg', time: '18:00', simHome: 1, simAway: 0, simWinner: 'home' },
+            { id: 'u6', homeKey: 'Czechia', awayKey: 'Croatia', time: '20:45', simHome: 1, simAway: 2, simWinner: 'away' },
+            { id: 'u7', homeKey: 'North Macedonia', awayKey: 'Switzerland', time: '20:45', simHome: 0, simAway: 2, simWinner: 'away' },
+            { id: 'u8', homeKey: 'England', awayKey: 'Spain', time: '20:45', simHome: 2, simAway: 1, simWinner: 'home' },
+            { id: 'u9', homeKey: 'Slovakia', awayKey: 'Moldova', time: '20:45', simHome: 3, simAway: 0, simWinner: 'home' },
+            { id: 'u10', homeKey: 'Albania', awayKey: 'Belarus', time: '20:45', simHome: 1, simAway: 0, simWinner: 'home' }
         ];
 
-        // State variables
-        let userBets = {}; // { matchId: 'home' | 'draw' | 'away' }
-        let lockedBets = {}; // { matchId: true }
+        // State variables (Default language: English)
+        let userBets = {};
+        let lockedBets = {};
         let isEvaluated = false;
+        let currentLang = 'en';
+
+        function saveStateToLocalStorage() {
+            try {
+                localStorage.setItem('unl_user_bets', JSON.stringify(userBets));
+                localStorage.setItem('unl_locked_bets', JSON.stringify(lockedBets));
+                localStorage.setItem('unl_is_evaluated', JSON.stringify(isEvaluated));
+                localStorage.setItem('unl_language', currentLang);
+            } catch (e) {
+                console.error('Failed to save state to localStorage:', e);
+            }
+        }
+
+        function loadStateFromLocalStorage() {
+            try {
+                const savedBets = localStorage.getItem('unl_user_bets');
+                if (savedBets) userBets = JSON.parse(savedBets);
+
+                const savedLocks = localStorage.getItem('unl_locked_bets');
+                if (savedLocks) lockedBets = JSON.parse(savedLocks);
+
+                const savedEval = localStorage.getItem('unl_is_evaluated');
+                if (savedEval !== null) isEvaluated = JSON.parse(savedEval);
+
+                const savedLang = localStorage.getItem('unl_language');
+                if (savedLang) currentLang = savedLang;
+            } catch (e) {
+                console.error('Failed to load state from localStorage:', e);
+            }
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'de' : 'en';
+            saveStateToLocalStorage();
+            updateUI();
+        }
+
+        function updateUI() {
+            const t = TRANSLATIONS[currentLang];
+            document.getElementById('lang-toggle-text').innerText = currentLang === 'en' ? 'EN' : 'DE';
+            document.getElementById('sub-header-text').innerText = t.subtitle;
+            document.getElementById('lbl-points').innerText = t.points;
+            document.getElementById('lbl-correct').innerText = t.correct;
+            document.getElementById('lbl-status').innerText = t.status;
+            document.getElementById('predictor-title').innerHTML = `<i class="fa-solid fa-gamepad text-cyan-400"></i> ${t.predictorTitle}`;
+            document.getElementById('predictor-desc').innerText = t.predictorDesc;
+            document.getElementById('btn-lock-all-text').innerText = t.btnLockAll;
+            document.getElementById('btn-simulate-text').innerText = t.btnSimulate;
+            document.getElementById('upcoming-title').childNodes[0].nodeValue = `${t.upcomingTitle} `;
+            document.getElementById('upcoming-subtitle').innerText = t.upcomingSubtitle;
+            document.getElementById('lbl-matches-count').innerText = t.matchesCount;
+            document.getElementById('finished-title').childNodes[0].nodeValue = `${t.finishedTitle} `;
+            document.getElementById('finished-subtitle').innerText = t.finishedSubtitle;
+            document.getElementById('lbl-results-count').innerText = t.resultsCount;
+            document.getElementById('footer-text-1').innerText = t.footer1;
+            document.getElementById('footer-text-2').innerText = t.footer2;
+
+            updateScoreboard();
+            renderFinishedMatches();
+            renderUpcomingMatches();
+        }
+
+        function updateScoreboard() {
+            const t = TRANSLATIONS[currentLang];
+            let totalPoints = 0;
+            let correctCount = 0;
+
+            upcomingMatches.forEach(m => {
+                const bet = userBets[m.id];
+                if (bet && bet === m.simWinner) {
+                    totalPoints += 3;
+                    correctCount++;
+                }
+            });
+
+            document.getElementById('user-points').innerText = isEvaluated ? totalPoints : '0';
+            document.getElementById('user-accuracy').innerText = isEvaluated ? `${correctCount}/${upcomingMatches.length}` : '0/0';
+
+            const badge = document.getElementById('prediction-status-badge');
+            if (isEvaluated) {
+                badge.innerText = t.evaluated;
+                badge.className = "text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+            } else {
+                badge.innerText = t.open;
+                badge.className = "text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30";
+            }
+        }
 
         function renderFinishedMatches() {
+            const t = TRANSLATIONS[currentLang];
             const container = document.getElementById('finished-matches-grid');
             container.innerHTML = finishedMatches.map(m => {
+                const homeName = getTeamName(m.homeKey, currentLang);
+                const awayName = getTeamName(m.awayKey, currentLang);
                 const homeWin = m.homeScore > m.awayScore;
                 const awayWin = m.awayScore > m.homeScore;
+                const displayDay = m.dayKey === 'yesterday' ? t.yesterday : t.today;
 
                 return `
                     <div class="bg-[#131B2E] border border-slate-800 hover:border-slate-700 rounded-xl p-4 shadow-md flex items-center justify-between transition-all">
@@ -274,8 +498,8 @@
                             <!-- Home Team -->
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-3">
-                                    <img src="${getFlagUrl(m.home)}" alt="${m.home}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
-                                    <span class="text-sm font-semibold ${homeWin ? 'text-white' : 'text-slate-400'}">${m.home}</span>
+                                    <img src="${getFlagUrl(m.homeKey)}" alt="${homeName}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
+                                    <span class="text-sm font-semibold ${homeWin ? 'text-white' : 'text-slate-400'}">${homeName}</span>
                                     ${m.redCard === 'home' ? '<span class="w-2.5 h-3.5 bg-red-600 rounded-sm inline-block shadow" title="Red Card"></span>' : ''}
                                 </div>
                                 <span class="text-base font-bold ${homeWin ? 'text-white font-extrabold' : 'text-slate-400'}">${m.homeScore}</span>
@@ -284,8 +508,8 @@
                             <!-- Away Team -->
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center space-x-3">
-                                    <img src="${getFlagUrl(m.away)}" alt="${m.away}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
-                                    <span class="text-sm font-semibold ${awayWin ? 'text-white' : 'text-slate-400'}">${m.away}</span>
+                                    <img src="${getFlagUrl(m.awayKey)}" alt="${awayName}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
+                                    <span class="text-sm font-semibold ${awayWin ? 'text-white' : 'text-slate-400'}">${awayName}</span>
                                     ${m.redCard === 'away' ? '<span class="w-2.5 h-3.5 bg-red-600 rounded-sm inline-block shadow" title="Red Card"></span>' : ''}
                                 </div>
                                 <span class="text-base font-bold ${awayWin ? 'text-white font-extrabold' : 'text-slate-400'}">${m.awayScore}</span>
@@ -294,8 +518,8 @@
 
                         <!-- Status Badge -->
                         <div class="pl-4 border-l border-slate-800 text-right min-w-[90px]">
-                            <span class="text-xs font-semibold text-slate-300 block">${m.status}</span>
-                            <span class="text-[11px] text-slate-500 font-medium">${m.day}</span>
+                            <span class="text-xs font-semibold text-slate-300 block">${t.finalScore}</span>
+                            <span class="text-[11px] text-slate-500 font-medium">${displayDay}</span>
                         </div>
                     </div>
                 `;
@@ -303,8 +527,11 @@
         }
 
         function renderUpcomingMatches() {
+            const t = TRANSLATIONS[currentLang];
             const container = document.getElementById('upcoming-matches-grid');
             container.innerHTML = upcomingMatches.map(m => {
+                const homeName = getTeamName(m.homeKey, currentLang);
+                const awayName = getTeamName(m.awayKey, currentLang);
                 const currentBet = userBets[m.id];
                 const isLocked = lockedBets[m.id] || isEvaluated;
 
@@ -312,22 +539,30 @@
                 if (isEvaluated) {
                     if (!currentBet) {
                         evaluationMessage = `<div class="mt-3 text-center py-1.5 px-3 rounded-lg bg-red-900/30 border border-red-700/50 text-red-300 font-semibold text-xs animate-fadeIn">
-                            <i class="fa-solid fa-circle-xmark mr-1"></i> You didn't bet on this match
+                            <i class="fa-solid fa-circle-xmark mr-1"></i> ${t.noBetMsg}
                         </div>`;
                     } else {
-                        const predictedTeam = currentBet === 'home' ? m.home : (currentBet === 'away' ? m.away : 'Draw');
+                        const predictedTeam = currentBet === 'home' ? homeName : (currentBet === 'away' ? awayName : t.draw);
                         const isCorrect = currentBet === m.simWinner;
 
                         if (isCorrect) {
+                            const resultStr = predictedTeam === t.draw ? t.drawOccurred : `${predictedTeam} ${t.wonMsg}`;
                             evaluationMessage = `<div class="mt-3 text-center py-1.5 px-3 rounded-lg bg-emerald-900/40 border border-emerald-500/50 text-emerald-300 font-bold text-xs animate-fadeIn">
-                                <i class="fa-solid fa-trophy text-amber-400 mr-1"></i> ${predictedTeam === 'Draw' ? 'Draw occurred!' : `${predictedTeam} won!`} (+3 pts)
+                                <i class="fa-solid fa-trophy text-amber-400 mr-1"></i> ${resultStr} (+3 pts)
                             </div>`;
                         } else {
+                            const winnerName = m.simWinner === 'home' ? homeName : (m.simWinner === 'away' ? awayName : t.draw);
+                            const winnerText = m.simWinner === 'draw' ? t.drawOccurred : `${winnerName} ${t.wonMsg}`;
                             evaluationMessage = `<div class="mt-3 text-center py-1.5 px-3 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 font-medium text-xs animate-fadeIn">
-                                <i class="fa-solid fa-circle-info mr-1"></i> Result: ${m.simWinner === 'home' ? m.home : (m.simWinner === 'away' ? m.away : 'Draw')} won (${m.simHome}-${m.simAway})
+                                <i class="fa-solid fa-circle-info mr-1"></i> ${t.resultPrefix}: ${winnerText} (${m.simHome}-${m.simAway})
                             </div>`;
                         }
                     }
+                } else if (isLocked && currentBet) {
+                    const selName = currentBet === 'home' ? homeName : (currentBet === 'away' ? awayName : t.draw);
+                    evaluationMessage = `<div class="mt-3 text-center py-1.5 px-3 rounded-lg bg-amber-900/20 border border-amber-600/40 text-amber-300 font-medium text-xs">
+                        <i class="fa-solid fa-lock text-[10px] mr-1"></i> ${t.lockedSelection}: ${selName}
+                    </div>`;
                 }
 
                 return `
@@ -336,10 +571,10 @@
                             <!-- Header Info -->
                             <div class="flex justify-between items-center mb-3 text-xs text-slate-400 border-b border-slate-800/80 pb-2">
                                 <span class="font-medium flex items-center gap-1.5">
-                                    <i class="fa-regular fa-clock text-cyan-400"></i> Morgen ${m.time}
+                                    <i class="fa-regular fa-clock text-cyan-400"></i> ${t.tomorrow} ${m.time}
                                 </span>
                                 <div class="flex items-center gap-2">
-                                    ${isLocked ? `<span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-500/40"><i class="fa-solid fa-lock text-[9px]"></i> Locked</span>` : ''}
+                                    ${isLocked ? `<span class="bg-amber-500/20 text-amber-300 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-500/40"><i class="fa-solid fa-lock text-[9px]"></i> ${t.locked}</span>` : ''}
                                     <button onclick="toggleLockMatch('${m.id}')" class="text-slate-400 hover:text-white transition-colors" title="${isLocked ? 'Unlock' : 'Lock'}">
                                         <i class="fa-solid ${isLocked ? 'fa-lock-open text-amber-400' : 'fa-lock'}"></i>
                                     </button>
@@ -350,13 +585,13 @@
                             <div class="grid grid-cols-2 gap-2 mb-3">
                                 <!-- Home Team -->
                                 <div class="flex items-center space-x-2.5 p-1.5 rounded-lg bg-slate-900/50">
-                                    <img src="${getFlagUrl(m.home)}" alt="${m.home}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
-                                    <span class="text-sm font-semibold text-white truncate">${m.home}</span>
+                                    <img src="${getFlagUrl(m.homeKey)}" alt="${homeName}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
+                                    <span class="text-sm font-semibold text-white truncate">${homeName}</span>
                                 </div>
                                 <!-- Away Team -->
                                 <div class="flex items-center space-x-2.5 p-1.5 rounded-lg bg-slate-900/50">
-                                    <img src="${getFlagUrl(m.away)}" alt="${m.away}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
-                                    <span class="text-sm font-semibold text-white truncate">${m.away}</span>
+                                    <img src="${getFlagUrl(m.awayKey)}" alt="${awayName}" class="w-6 h-4 object-cover rounded badge-flag" onerror="this.src='https://placehold.co/24x16/334155/ffffff?text=FLAG'">
+                                    <span class="text-sm font-semibold text-white truncate">${awayName}</span>
                                 </div>
                             </div>
 
@@ -368,7 +603,7 @@
                                             ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-cyan-400 shadow-md shadow-cyan-500/20' 
                                             : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 border-slate-700'
                                     } ${isLocked ? 'opacity-60 cursor-not-allowed' : ''}">
-                                    1 (${m.home})
+                                    1 (${homeName})
                                 </button>
                                 <button onclick="selectBet('${m.id}', 'draw')" ${isLocked ? 'disabled' : ''} 
                                     class="py-2 px-1 rounded-lg text-xs font-bold transition-all border ${
@@ -376,7 +611,7 @@
                                             ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-cyan-400 shadow-md shadow-cyan-500/20' 
                                             : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 border-slate-700'
                                     } ${isLocked ? 'opacity-60 cursor-not-allowed' : ''}">
-                                    X (Draw)
+                                    X (${t.draw})
                                 </button>
                                 <button onclick="selectBet('${m.id}', 'away')" ${isLocked ? 'disabled' : ''} 
                                     class="py-2 px-1 rounded-lg text-xs font-bold transition-all border ${
@@ -384,7 +619,7 @@
                                             ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white border-cyan-400 shadow-md shadow-cyan-500/20' 
                                             : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 border-slate-700'
                                     } ${isLocked ? 'opacity-60 cursor-not-allowed' : ''}">
-                                    2 (${m.away})
+                                    2 (${awayName})
                                 </button>
                             </div>
                         </div>
@@ -404,6 +639,7 @@
             } else {
                 userBets[matchId] = outcome;
             }
+            saveStateToLocalStorage();
             renderUpcomingMatches();
         }
 
@@ -413,6 +649,7 @@
             } else {
                 lockedBets[matchId] = true;
             }
+            saveStateToLocalStorage();
             renderUpcomingMatches();
         }
 
@@ -420,61 +657,30 @@
             upcomingMatches.forEach(m => {
                 lockedBets[m.id] = true;
             });
+            saveStateToLocalStorage();
             renderUpcomingMatches();
         }
 
         function simulateUpcomingMatches() {
             isEvaluated = true;
-            // Automatically lock all matches when evaluating
             upcomingMatches.forEach(m => {
                 lockedBets[m.id] = true;
             });
-
-            // Calculate points and accuracy
-            let totalPoints = 0;
-            let correctCount = 0;
-            let totalBets = 0;
-
-            upcomingMatches.forEach(m => {
-                const bet = userBets[m.id];
-                if (bet) {
-                    totalBets++;
-                    if (bet === m.simWinner) {
-                        totalPoints += 3;
-                        correctCount++;
-                    }
-                }
-            });
-
-            // Update Header Scoreboard
-            document.getElementById('user-points').innerText = totalPoints;
-            document.getElementById('user-accuracy').innerText = `${correctCount}/${upcomingMatches.length}`;
-            
-            const badge = document.getElementById('prediction-status-badge');
-            badge.innerText = "Evaluated";
-            badge.className = "text-xs font-semibold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-
-            renderUpcomingMatches();
+            saveStateToLocalStorage();
+            updateUI();
         }
 
         function resetUpcomingPredictions() {
             userBets = {};
             lockedBets = {};
             isEvaluated = false;
-
-            document.getElementById('user-points').innerText = '0';
-            document.getElementById('user-accuracy').innerText = '0/0';
-
-            const badge = document.getElementById('prediction-status-badge');
-            badge.innerText = "Open";
-            badge.className = "text-xs font-semibold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30";
-
-            renderUpcomingMatches();
+            saveStateToLocalStorage();
+            updateUI();
         }
 
         window.onload = function() {
-            renderFinishedMatches();
-            renderUpcomingMatches();
+            loadStateFromLocalStorage();
+            updateUI();
         };
     </script>
 </body>
